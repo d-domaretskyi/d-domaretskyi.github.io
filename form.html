@@ -18,14 +18,41 @@
 
     function initForm() {
 
+        const urlParams = getUrlParams();
+
+        // check process instance id
+        const instanceId = urlParams['pid'];
+        if(!instanceId) {
+            $('#form_container').html('<span style="color: red">Please specify instanceId like form.html?pid=*********</span>');
+            return;
+        }
+
         const initFormObject = {
             id: 'urIq5QHy',
-            containerId: "form_container",
-            publisherUri: "https://publisher.formsengine.io",
-            theme: "athlon-q2o"
+            containerId: 'form_container',
+            publisherUri: 'https://publisher.formsengine.io',
+            theme: 'athlon-q2o',
+            clearForm: true,
+            initPrefillData: {
+                instanceId: instanceId || ''
+            }
         }
 
         FE.initForm(initFormObject);
+
+        function getUrlParams() {
+            const params = {};
+            let search = window.location.search;
+            search = search.replace('?', '');
+            search = search.split('&');
+            
+            search.forEach(param => {
+                const separatedValues = param.split('=');
+                params[separatedValues[0]] = separatedValues[1];
+            });
+
+            return params;
+        }
 
     }
 </script>
